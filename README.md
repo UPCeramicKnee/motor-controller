@@ -23,14 +23,10 @@ The stepper motor came with 8 exposed wires. So it can be used in Unipolar, Bipo
 
 ### Repository Contents
 
-#### KeypadTest[1...n]
-Simple keypad based menu chooser prototype for 1602 shield. Custom LCD characters were generated using the online tool at http://omerk.github.io/lcdchargen/.
+**KeypadTest[1...n]** -- Simple keypad based menu chooser prototype for 1602 shield. Custom LCD characters were generated using the online tool at http://omerk.github.io/lcdchargen/.
 
-#### LCDKeypad
-Keypad/LCD library that worked best with my 1602 LCD Keypad shield, which uses nonstandard pinouts.
+**LCDKeypad** -- Keypad/LCD library that worked best with my 1602 LCD Keypad shield, which uses nonstandard pinouts.
 
-#### Make Magazine Motor Test
-Code from [Driving Big Stepper Motors with Arduino](http://makezine.com/video/driving-big-stepper-motors-with-arduino/) article with modifications.
+**Make Magazine Motor Test** -- Code from [Driving Big Stepper Motors with Arduino](http://makezine.com/video/driving-big-stepper-motors-with-arduino/) article with modifications.
 
-### Reference
-Spec sheets
+**Reference** -- Spec sheets
