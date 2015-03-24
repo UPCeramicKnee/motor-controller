@@ -20,6 +20,15 @@ The stepper motor came with 8 exposed wires. So it can be used in Unipolar, Bipo
 
 [to be completed]
 
+#### Pins for ST-M5045
+
+- Pul+ goes to +5V
+- Pul- goes to Arduino Pin 22
+- Dir+ goes to +5V
+- Dir- goes to to Arduino Pin 24
+- Enable+ to nothing
+- Enable- to nothing
+
 ### Repository Contents
 
 **KeypadTest[1...n]** - Simple keypad based menu chooser prototype for 1602 shield. Custom LCD characters were generated using the online tool at http://omerk.github.io/lcdchargen/.
