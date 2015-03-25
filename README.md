@@ -33,6 +33,10 @@ The stepper motor came with 8 exposed wires. So it can be used in Unipolar, Bipo
 
 - We put the driver in 8-microstep mode. We would like to use more but the Arduino is not fast enough to pulses for that.
 
+### Questions
+
+- What speed profile to use? Constant acceleration, constant jerk (s-curve), etc? Looks like AccelStepper library uses constant acceleration.
+
 ### Repository Contents
 
 **KeypadTest[1...n]** - Simple keypad based menu chooser prototype for 1602 shield. Custom LCD characters were generated using the online tool at http://omerk.github.io/lcdchargen/.
