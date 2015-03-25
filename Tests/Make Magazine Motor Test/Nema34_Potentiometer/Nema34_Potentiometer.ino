@@ -2,12 +2,12 @@
 John Saunders NYCCNC http://www.nyccnc.com/
   
 microstep driver ST-M5045
-Pul+ goes to +5V
-Pul- goes to Arduino Pin 9
-Dir+ goes to +5V
-Dir- goes to to Arduino Pin 8
-Enable+ to nothing
-Enable- to nothing
+- Pul+ goes to +5V
+- Pul- goes to Arduino Pin 22
+- Dir+ goes to +5V
+- Dir- goes to to Arduino Pin 24
+- Enable+ to nothing
+- Enable- to nothing
 */
 
 //int sensorPin = A3;

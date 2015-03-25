@@ -20,7 +20,7 @@ The stepper motor came with 8 exposed wires. So it can be used in Unipolar, Bipo
 
 [to be completed]
 
-#### Pins for ST-M5045
+#### Pins from Arduion to ST-M5045
 
 - Pul+ goes to +5V
 - Pul- goes to Arduino Pin 22
@@ -28,6 +28,10 @@ The stepper motor came with 8 exposed wires. So it can be used in Unipolar, Bipo
 - Dir- goes to to Arduino Pin 24
 - Enable+ to nothing
 - Enable- to nothing
+
+#### Microsteps
+
+- We put the driver in 8-microstep mode. We would like to use more but the Arduino is not fast enough to pulses for that.
 
 ### Repository Contents
 
