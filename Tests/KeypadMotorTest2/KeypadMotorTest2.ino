@@ -1,6 +1,7 @@
 #include <LiquidCrystal.h>
 #include "./LCDKeypad.h"
 #include "./AccelStepper.h"
+#include "./LCDKeypadExtraChars.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 // VARIABLE INITIALIZATIONS AND CONSTANTS
@@ -28,90 +29,6 @@ const char* Main_Menu_Names[] =
 LCDKeypad lcd;
 AccelStepper stepper(AccelStepper::DRIVER, 22, 24);
 
-enum LCD_Chars
-{
-    lcd_char_select = 1, //causes lcd_char_left == 2, and so on...
-    lcd_char_left,
-    lcd_char_right,
-    lcd_char_up, 
-    lcd_char_down,
-    lcd_char_updown,
-};
-
-byte c_select[8] =
-{
-  0b00000,
-  0b11111,
-  0b10001,
-  0b10001,
-  0b10001,
-  0b11111,
-  0b00000,
-  0b00000
-};
-
-byte c_left[8] =
-{
-  0b00000,
-  0b00010,
-  0b00110,
-  0b01110,
-  0b00110,
-  0b00010,
-  0b00000,
-  0b00000
-};
-
-byte c_right[8] =
-{
-  0b00000,
-  0b01000,
-  0b01100,
-  0b01110,
-  0b01100,
-  0b01000,
-  0b00000,
-  0b00000
-};
-
-byte c_up[8] =
-{
-  0b00000,
-  0b00000,
-  0b00000,
-  0b00000,
-  0b00100,
-  0b01110,
-  0b11111,
-  0b00000
-};
-
-byte c_down[8] =
-{
-  0b00000,
-  0b00000,
-  0b00000,
-  0b00000,
-  0b11111,
-  0b01110,
-  0b00100,
-  0b00000,
-};
-
-byte c_updown[8] =
-{
-  0b00100,
-  0b01110,
-  0b11111,
-  0b00000,
-  0b11111,
-  0b01110,
-  0b00100,
-  0b00000
-};
-
-
-
 ////////////////////////////////////////////////////////////////////////////////
 // MAIN
 ////////////////////////////////////////////////////////////////////////////////
@@ -122,20 +39,7 @@ void setup()
   stepper.setAcceleration(10000);
 
   lcd.begin(16, 2);
-  lcd.createChar(lcd_char_select, c_select);
-  lcd.createChar(lcd_char_left, c_left);
-  lcd.createChar(lcd_char_right, c_right);
-  lcd.createChar(lcd_char_up, c_up);
-  lcd.createChar(lcd_char_down, c_down);
-  lcd.createChar(lcd_char_updown, c_updown);
-
-//  lcd.createChar(1, c_select);
-//  lcd.createChar(2, c_up);
-//  lcd.createChar(3, c_down);
-//  lcd.createChar(4, c_updown);
-//  lcd.createChar(5, c_left);
-//  lcd.createChar(6, c_right);
-
+  LCDKeypadExtraCharsInit(lcd); //initializes the extra up/down/left//right/select icons
 
   //Start getting user input
   lcd.clear();
@@ -240,7 +144,7 @@ int showMenu(const char** menu_item_names, int menu_length)
     lcd.print(menu_item_names[menu_active_item]);
     lcd.setCursor(0, 1);
     lcd.write(lcd_char_select);
-    lcd.print(":SELECT");
+    lcd.print(":Select/Okay");
     lcd.setCursor(15,1);
     lcd.write(lcd_char_updown);
 
@@ -294,14 +198,14 @@ void doStepper(int repetitions)
 void rotateAndZero()
 {
   lcd.clear();
-  lcd.print("Adjust motor pos.");
+  lcd.print("Set motor pos.");
   lcd.setCursor(0, 1);
-  lcd.write(1);
-  lcd.print(" Ok ");
-  lcd.write(2); // ^
-  lcd.write(3); // V
-  lcd.print(" 1.8 deg");
-  waitButton();
+  lcd.write(lcd_char_select);
+  lcd.print(":Ok  ");
+  lcd.write(lcd_char_updown);
+  lcd.print(":adj 1.8");
+  lcd.write(lcd_char_degrees);
+  waitButton(); //dummy code
   waitReleaseButton();
   //Allows user to move motor forwards and backwards to set starting position.
 }
