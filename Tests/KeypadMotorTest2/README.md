@@ -9,5 +9,9 @@ An improvement over KeypadMotorTest1.
 - Set speed?
 - Pretend mode vs real mode
 - Cancel and return to zero pt
-- About screen
 - Control enable pin
+- Show elapsed time afterwards
+
+## Completed
+
+- About screen
