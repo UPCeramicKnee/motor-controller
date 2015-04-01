@@ -28,7 +28,54 @@ const char* Main_Menu_Names[] =
 LCDKeypad lcd;
 AccelStepper stepper(AccelStepper::DRIVER, 22, 24);
 
-byte c_up[8] = {
+enum LCD_Chars
+{
+    lcd_char_select = 1, //causes lcd_char_left == 2, and so on...
+    lcd_char_left,
+    lcd_char_right,
+    lcd_char_up, 
+    lcd_char_down,
+    lcd_char_updown,
+};
+
+byte c_select[8] =
+{
+  0b00000,
+  0b11111,
+  0b10001,
+  0b10001,
+  0b10001,
+  0b11111,
+  0b00000,
+  0b00000
+};
+
+byte c_left[8] =
+{
+  0b00000,
+  0b00010,
+  0b00110,
+  0b01110,
+  0b00110,
+  0b00010,
+  0b00000,
+  0b00000
+};
+
+byte c_right[8] =
+{
+  0b00000,
+  0b01000,
+  0b01100,
+  0b01110,
+  0b01100,
+  0b01000,
+  0b00000,
+  0b00000
+};
+
+byte c_up[8] =
+{
   0b00000,
   0b00000,
   0b00000,
@@ -39,7 +86,8 @@ byte c_up[8] = {
   0b00000
 };
 
-byte c_down[8] = {
+byte c_down[8] =
+{
   0b00000,
   0b00000,
   0b00000,
@@ -50,16 +98,19 @@ byte c_down[8] = {
   0b00000,
 };
 
-byte c_select[8] = {
-  0b00000,
+byte c_updown[8] =
+{
+  0b00100,
+  0b01110,
+  0b11111,
   0b00000,
   0b11111,
-  0b10001,
-  0b10001,
-  0b10001,
-  0b11111,
+  0b01110,
+  0b00100,
   0b00000
 };
+
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // MAIN
@@ -70,10 +121,21 @@ void setup()
   stepper.setMaxSpeed(4000); //max supported is about 4000
   stepper.setAcceleration(10000);
 
-  lcd.createChar(1, c_select);
-  lcd.createChar(2, c_up);
-  lcd.createChar(3, c_down);
   lcd.begin(16, 2);
+  lcd.createChar(lcd_char_select, c_select);
+  lcd.createChar(lcd_char_left, c_left);
+  lcd.createChar(lcd_char_right, c_right);
+  lcd.createChar(lcd_char_up, c_up);
+  lcd.createChar(lcd_char_down, c_down);
+  lcd.createChar(lcd_char_updown, c_updown);
+
+//  lcd.createChar(1, c_select);
+//  lcd.createChar(2, c_up);
+//  lcd.createChar(3, c_down);
+//  lcd.createChar(4, c_updown);
+//  lcd.createChar(5, c_left);
+//  lcd.createChar(6, c_right);
+
 
   //Start getting user input
   lcd.clear();
@@ -168,8 +230,8 @@ int showMenu(const char** menu_item_names, int menu_length)
   //RETURNS INT OF SELECTED MENU ITEM
   //int menu_length = FINAL_MENU_ITEMS_ENTRY;
   int which_button = 0;
-  bool has_chosen = 0;
   int menu_active_item = 0; //always start at the first item
+  bool has_chosen = 0;
 
   while (!has_chosen) {
     lcd.clear();
@@ -177,12 +239,10 @@ int showMenu(const char** menu_item_names, int menu_length)
     lcd.print(".");
     lcd.print(menu_item_names[menu_active_item]);
     lcd.setCursor(0, 1);
-    lcd.write(1);
-    lcd.print(" Sel ");
-    lcd.write(2);
-    lcd.print(" Up ");
-    lcd.write(3);
-    lcd.print(" Dn");
+    lcd.write(lcd_char_select);
+    lcd.print(":SELECT");
+    lcd.setCursor(15,1);
+    lcd.write(lcd_char_updown);
 
     //TODO: Consider adding extra debouncing to button presses
 
