@@ -1,6 +1,6 @@
 #include <LiquidCrystal.h>
-#include "LCDKeypad.h"
-#include "AccelStepper.h"
+#include "./LCDKeypad.h"
+#include "./AccelStepper.h"
 
 LCDKeypad lcd;
 AccelStepper stepper(AccelStepper::DRIVER, 22, 24);
@@ -46,7 +46,7 @@ void setup()
 {
   stepper.setMaxSpeed(4000); //max supported is about 4000
   stepper.setAcceleration(10000);
-  
+
   lcd.createChar(1, c_select);
   lcd.createChar(2, c_up);
   lcd.createChar(3, c_down);
@@ -118,7 +118,7 @@ void setup()
 
 
   //Just some demo code for now
-  for (int i = 1; i < 2; i++) {
+  for (int i = 1; i < 10; i++) {
     lcd.clear();
     lcd.print("Testing...");
     lcd.setCursor(0, 1);
@@ -127,7 +127,7 @@ void setup()
     lcd.print(i);
 
     stepper.runToNewPosition(1600);
-    //stepper.runToNewPosition(0);
+    stepper.runToNewPosition(0);
   }
   lcd.clear();
   lcd.print("Done");
