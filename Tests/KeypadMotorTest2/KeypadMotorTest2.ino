@@ -184,30 +184,21 @@ int showMenu(const char** menu_item_names, int menu_length)
     lcd.write(3);
     lcd.print(" Dn");
 
-    //Waits for correct input
-    //TODO: Add debouncing support
+    //TODO: Consider adding extra debouncing to button presses
 
-    do
+    switch (waitButton()) //Waits for a button to be pressed then interprets the result.
     {
-      which_button = waitButton();
-    }
-    while (!(which_button == KEYPAD_SELECT || which_button == KEYPAD_UP || which_button == KEYPAD_DOWN));
-
-    if (which_button == KEYPAD_SELECT)
-    {
-      has_chosen = true; //ends loop
-    }
-    if (which_button == KEYPAD_DOWN)
-    {
-      menu_active_item++;
-      //loop back if maximum
-      if (menu_active_item == menu_length) menu_active_item = 0;
-    }
-    if (which_button == KEYPAD_UP)
-    {
-      menu_active_item--;
-      //loop back if minimum
-      if (menu_active_item == -1) menu_active_item = menu_length - 1;
+      case KEYPAD_UP:
+        menu_active_item--;
+        if (menu_active_item == -1) menu_active_item = menu_length - 1; //loop back if minimum
+        break;
+      case KEYPAD_DOWN:
+        menu_active_item++;
+        if (menu_active_item == menu_length) menu_active_item = 0; //wrap around if maximum
+        break;
+      case KEYPAD_SELECT:
+        has_chosen = true; //ends loop
+        break;
     }
     waitReleaseButton();
   }
