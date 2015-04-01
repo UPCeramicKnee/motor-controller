@@ -8,7 +8,8 @@
 
 enum Main_Menu
 {
-  mode_demo,
+  mode_rotate_and_zero,
+  mode_1_cycle,
   mode_10_cycles,
   mode_100_cycles,
   mode_about,
@@ -17,9 +18,10 @@ enum Main_Menu
 
 const char* Main_Menu_Names[] =
 {
-  "Demo mode",
-  "10 Cycles",
-  "100 Cycles",
+  "Rotate/re-zero",
+  "1 cycle",
+  "10 cycles",
+  "100 cycles",
   "About"
 };
 
@@ -75,16 +77,17 @@ void setup()
 
   //Start getting user input
   lcd.clear();
-  lcd.print("Pick Mode");
-  lcd.setCursor(0, 1);
-  lcd.print("to begin.");
+  lcd.print("Pick menu option");
   delay(1000);
 
   int main_menu_choice = showMenu(Main_Menu_Names, MAIN_MENU_ENUM_LAST_ITEM);
 
   switch (main_menu_choice)
   {
-    case mode_demo:
+    case mode_rotate_and_zero:
+      rotateAndZero();
+      break;
+    case mode_1_cycle:
       doStepper(1);
       break;
     case mode_10_cycles:
@@ -98,14 +101,14 @@ void setup()
       break;
   }
 
-  if (main_menu_choice == mode_about)
-  {
-
-  }
-
   //END OF PROGRAM
   lcd.clear();
   lcd.print("Done.");
+  delay(2000);
+  lcd.clear();
+  lcd.print("Hit RESET to do");
+  lcd.setCursor(0, 1);
+  lcd.print("something else.");
 }
 
 void loop()
@@ -211,7 +214,7 @@ int showMenu(const char** menu_item_names,int menu_length)
   return menu_active_item;
 }
 
-// STEPPER
+// STEPPER AND MAIN MOVEMENT CODES
 
 void doStepperOneCycle()
 {
@@ -235,4 +238,19 @@ void doStepper(int repetitions)
     lcd.print(i);
     doStepperOneCycle();
   }
+}
+
+void rotateAndZero()
+{
+  lcd.clear();
+  lcd.print("Adjust motor pos.");
+  lcd.setCursor(0, 1);
+  lcd.write(1);
+  lcd.print(" Ok ");
+  lcd.write(2); // ^
+  lcd.write(3); // V
+  lcd.print(" 1.8 deg");
+  waitButton();
+  waitReleaseButton();
+  //Allows user to move motor forwards and backwards to set starting position.
 }
