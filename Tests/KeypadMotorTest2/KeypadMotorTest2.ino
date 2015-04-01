@@ -163,7 +163,7 @@ void showAboutScreen()
   delay(1000);
 }
 
-int showMenu(const char** menu_item_names,int menu_length)
+int showMenu(const char** menu_item_names, int menu_length)
 {
   //RETURNS INT OF SELECTED MENU ITEM
   //int menu_length = FINAL_MENU_ITEMS_ENTRY;
@@ -173,7 +173,7 @@ int showMenu(const char** menu_item_names,int menu_length)
 
   while (!has_chosen) {
     lcd.clear();
-    lcd.print(menu_active_item+1);
+    lcd.print(menu_active_item + 1);
     lcd.print(".");
     lcd.print(menu_item_names[menu_active_item]);
     lcd.setCursor(0, 1);
@@ -231,7 +231,7 @@ void doStepper(int repetitions)
   {
     lcd.clear();
     lcd.print("time=");
-    lcd.print(millis()-starting_time);
+    lcd.print(millis() - starting_time);
     lcd.print("ms");
     lcd.setCursor(0, 1);
     lcd.print("Cycle #");
