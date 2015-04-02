@@ -144,7 +144,7 @@ int showMenu(const char** menu_item_names, int menu_length)
     lcd.print(menu_item_names[menu_active_item]);
     lcd.setCursor(0, 1);
     lcd.write(lcd_char_select);
-    lcd.print(":Select/Okay");
+    lcd.print(":Ok/Select");
     lcd.setCursor(15,1);
     lcd.write(lcd_char_updown);
 
@@ -161,6 +161,7 @@ int showMenu(const char** menu_item_names, int menu_length)
         if (menu_active_item == menu_length) menu_active_item = 0; //wrap around if maximum
         break;
       case KEYPAD_SELECT:
+        //TODO: have user confirm by pressing again or to cancel and terminate everything
         has_chosen = true; //ends loop
         break;
     }
@@ -199,6 +200,7 @@ void rotateAndZero()
 {
   lcd.clear();
   lcd.print("Set motor pos.");
+  //TODO: Replace with showing current adjustment amount like "angledelta=[...] degs"
   lcd.setCursor(0, 1);
   lcd.write(lcd_char_select);
   lcd.print(":Ok  ");
