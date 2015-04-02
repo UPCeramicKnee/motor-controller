@@ -15,3 +15,9 @@ An improvement over KeypadMotorTest1.
 ## Completed
 
 - About screen
+
+## Other
+
+- .linter-clang-includes to enable linter-clang Arduino header in Atom Editor
+- .ctags to enable .ino support in Atom Editor
+- started following Chromium style guide
