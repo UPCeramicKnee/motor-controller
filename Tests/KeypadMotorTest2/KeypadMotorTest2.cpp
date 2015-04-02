@@ -1,4 +1,3 @@
-#include "KeypadMotorTest2.h"
 #include "Arduino.h"
 #include <LiquidCrystal.h>
 #include "./LCDKeypad.h"
@@ -85,7 +84,7 @@ void loop() {
 
 int waitButton() {
   int which_button;
-  waitReleaseButton();
+  waitReleaseButton;
   lcd.blink();
   while ((which_button = lcd.button()) == KEYPAD_NONE) {
   }
@@ -121,6 +120,7 @@ void showAboutScreen() {
 int showMenu(const char** menu_item_names, int menu_length) {
   // RETURNS INT OF SELECTED MENU ITEM
   // int menu_length = FINAL_MENU_ITEMS_ENTRY;
+  int which_button = 0;
   int menu_active_item = 0;  // always start at the first item
   bool has_chosen = 0;
 

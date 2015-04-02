@@ -93,5 +93,4 @@ void LCDKeypadExtraCharsInit(LCDKeypad &mylcd)
   mylcd.createChar(lcd_char_down, c_down);
   mylcd.createChar(lcd_char_updown, c_updown);
   mylcd.createChar(lcd_char_degrees, c_degrees);
-}
-
+};

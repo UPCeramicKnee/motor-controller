@@ -5,9 +5,8 @@
 #include <LiquidCrystal.h>
 #include "./LCDKeypad.h"
 
-enum LCD_Chars
-{
-  lcd_char_select = 1, //causes lcd_char_left == 2, and so on...
+enum LCD_Chars {
+  lcd_char_select = 1,  // causes lcd_char_left == 2, and so on...
   lcd_char_left,
   lcd_char_right,
   lcd_char_up,
