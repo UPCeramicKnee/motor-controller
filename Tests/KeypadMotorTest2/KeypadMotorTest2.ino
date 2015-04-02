@@ -1,6 +1,7 @@
 #include <LiquidCrystal.h>
 #include "./LCDKeypad.h"
 #include "./AccelStepper.h"
+#include "./LCDKeypadExtraChars.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 // VARIABLE INITIALIZATIONS AND CONSTANTS
@@ -28,39 +29,6 @@ const char* Main_Menu_Names[] =
 LCDKeypad lcd;
 AccelStepper stepper(AccelStepper::DRIVER, 22, 24);
 
-byte c_up[8] = {
-  0b00000,
-  0b00000,
-  0b00000,
-  0b00000,
-  0b00100,
-  0b01110,
-  0b11111,
-  0b00000
-};
-
-byte c_down[8] = {
-  0b00000,
-  0b00000,
-  0b00000,
-  0b00000,
-  0b11111,
-  0b01110,
-  0b00100,
-  0b00000,
-};
-
-byte c_select[8] = {
-  0b00000,
-  0b00000,
-  0b11111,
-  0b10001,
-  0b10001,
-  0b10001,
-  0b11111,
-  0b00000
-};
-
 ////////////////////////////////////////////////////////////////////////////////
 // MAIN
 ////////////////////////////////////////////////////////////////////////////////
@@ -70,10 +38,8 @@ void setup()
   stepper.setMaxSpeed(4000); //max supported is about 4000
   stepper.setAcceleration(10000);
 
-  lcd.createChar(1, c_select);
-  lcd.createChar(2, c_up);
-  lcd.createChar(3, c_down);
   lcd.begin(16, 2);
+  LCDKeypadExtraCharsInit(lcd); //initializes the extra up/down/left//right/select icons
 
   //Start getting user input
   lcd.clear();
@@ -163,51 +129,41 @@ void showAboutScreen()
   delay(1000);
 }
 
-int showMenu(const char** menu_item_names,int menu_length)
+int showMenu(const char** menu_item_names, int menu_length)
 {
   //RETURNS INT OF SELECTED MENU ITEM
   //int menu_length = FINAL_MENU_ITEMS_ENTRY;
   int which_button = 0;
-  bool has_chosen = 0;
   int menu_active_item = 0; //always start at the first item
+  bool has_chosen = 0;
 
   while (!has_chosen) {
     lcd.clear();
-    lcd.print(menu_active_item+1);
+    lcd.print(menu_active_item + 1);
     lcd.print(".");
     lcd.print(menu_item_names[menu_active_item]);
     lcd.setCursor(0, 1);
-    lcd.write(1);
-    lcd.print(" Sel ");
-    lcd.write(2);
-    lcd.print(" Up ");
-    lcd.write(3);
-    lcd.print(" Dn");
+    lcd.write(lcd_char_select);
+    lcd.print(":Ok/Select");
+    lcd.setCursor(15,1);
+    lcd.write(lcd_char_updown);
 
-    //Waits for correct input
-    //TODO: Add debouncing support
+    //TODO: Consider adding extra debouncing to button presses
 
-    do
+    switch (waitButton()) //Waits for a button to be pressed then interprets the result.
     {
-      which_button = waitButton();
-    }
-    while (!(which_button == KEYPAD_SELECT || which_button == KEYPAD_UP || which_button == KEYPAD_DOWN));
-
-    if (which_button == KEYPAD_SELECT)
-    {
-      has_chosen = true; //ends loop
-    }
-    if (which_button == KEYPAD_DOWN)
-    {
-      menu_active_item++;
-      //loop back if maximum
-      if (menu_active_item == menu_length) menu_active_item = 0;
-    }
-    if (which_button == KEYPAD_UP)
-    {
-      menu_active_item--;
-      //loop back if minimum
-      if (menu_active_item == -1) menu_active_item = menu_length - 1;
+      case KEYPAD_UP:
+        menu_active_item--;
+        if (menu_active_item == -1) menu_active_item = menu_length - 1; //loop back if minimum
+        break;
+      case KEYPAD_DOWN:
+        menu_active_item++;
+        if (menu_active_item == menu_length) menu_active_item = 0; //wrap around if maximum
+        break;
+      case KEYPAD_SELECT:
+        //TODO: have user confirm by pressing again or to cancel and terminate everything
+        has_chosen = true; //ends loop
+        break;
     }
     waitReleaseButton();
   }
@@ -231,7 +187,7 @@ void doStepper(int repetitions)
   {
     lcd.clear();
     lcd.print("time=");
-    lcd.print(millis()-starting_time);
+    lcd.print(millis() - starting_time);
     lcd.print("ms");
     lcd.setCursor(0, 1);
     lcd.print("Cycle #");
@@ -243,14 +199,15 @@ void doStepper(int repetitions)
 void rotateAndZero()
 {
   lcd.clear();
-  lcd.print("Adjust motor pos.");
+  lcd.print("Set motor pos.");
+  //TODO: Replace with showing current adjustment amount like "angledelta=[...] degs"
   lcd.setCursor(0, 1);
-  lcd.write(1);
-  lcd.print(" Ok ");
-  lcd.write(2); // ^
-  lcd.write(3); // V
-  lcd.print(" 1.8 deg");
-  waitButton();
+  lcd.write(lcd_char_select);
+  lcd.print(":Ok  ");
+  lcd.write(lcd_char_updown);
+  lcd.print(":adj 1.8");
+  lcd.write(lcd_char_degrees);
+  waitButton(); //dummy code
   waitReleaseButton();
   //Allows user to move motor forwards and backwards to set starting position.
 }
