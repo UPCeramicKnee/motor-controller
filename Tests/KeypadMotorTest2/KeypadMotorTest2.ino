@@ -26,6 +26,7 @@ const char* Main_Menu_Names[] = {"Rotate/re-zero",
 
 LCDKeypad lcd;
 AccelStepper stepper(AccelStepper::DRIVER, 22, 24);
+//AccelStepper stepper(AccelStepper::HALF4WIRE, 8, 11, 9, 10, 8);
 
 ////////////////////////////////////////////////////////////////////////////////
 // MAIN
@@ -34,6 +35,9 @@ AccelStepper stepper(AccelStepper::DRIVER, 22, 24);
 void setup() {
   stepper.setMaxSpeed(4000);  // max supported is about 4000
   stepper.setAcceleration(10000);
+  //Test Setup Config:
+  //stepper.setMaxSpeed(1000);
+  //stepper.setAcceleration(1000);
   //stepper.runToNewPosition(6400);
 
   lcd.begin(16, 2);
