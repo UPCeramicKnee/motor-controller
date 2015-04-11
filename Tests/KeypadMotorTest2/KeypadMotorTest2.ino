@@ -34,6 +34,7 @@ AccelStepper stepper(AccelStepper::DRIVER, 22, 24);
 void setup() {
   stepper.setMaxSpeed(4000);  // max supported is about 4000
   stepper.setAcceleration(10000);
+  //stepper.runToNewPosition(6400);
 
   lcd.begin(16, 2);
   // initialize the extra up/down/left//right/select icons:
@@ -167,7 +168,7 @@ int showMenu(const char** menu_item_names, int menu_length) {
 
 void doStepperOneCycle() {
   // Moves back and forth once, then returns.
-  stepper.runToNewPosition(1600);
+  stepper.runToNewPosition(400);
   stepper.runToNewPosition(0);
 }
 
@@ -188,16 +189,62 @@ void doStepper(int repetitions) {
 
 void rotateAndZero() {
   lcd.clear();
-  lcd.print("Set motor pos.");
-  // TODO: Replace with showing current adjustment amount like "angledelta=[...]
-  // degs"
-  lcd.setCursor(0, 1);
-  lcd.write(lcd_char_select);
-  lcd.print(":Ok  ");
-  lcd.write(lcd_char_updown);
-  lcd.print(":adj 1.8");
-  lcd.write(lcd_char_degrees);
-  waitButton();  // dummy code
-  waitReleaseButton();
+
   // Allows user to move motor forwards and backwards to set starting position.
+  bool is_done = 0;
+  int last_millis = 0;
+
+  while (!is_done) {
+    if ((millis() - last_millis) > 1000) {
+      last_millis = millis();
+      lcd.clear();
+      lcd.print("steps=");
+      lcd.print(stepper.currentPosition());
+      lcd.print(",");
+      lcd.print(stepper.targetPosition());
+      // TODO: Replace with showing current adjustment amount like "angledelta=[...]
+      // degs"
+      lcd.setCursor(0, 1);
+      lcd.write(lcd_char_select);
+      lcd.print(":Ok  ");
+      lcd.write(lcd_char_updown);
+      lcd.print(":adj 1.8");
+      lcd.write(lcd_char_degrees);
+    }
+
+
+    // Waits for a button to be pressed then interprets the result
+
+    // int which_button;
+    // waitReleaseButton();
+    // // lcd.blink();
+    // while ((which_button = lcd.button()) == KEYPAD_NONE) {
+    //   stepper.run();
+    // }
+    // delay(50);
+    // lcd.noBlink();
+
+    switch (lcd.button()) {
+      case KEYPAD_UP:
+        stepper.moveTo(stepper.targetPosition()+8);
+        waitReleaseButton();
+        //delay(50);
+        //stepper.runToPosition();
+        break;
+      case KEYPAD_DOWN:
+        stepper.moveTo(stepper.targetPosition()-8);
+        waitReleaseButton();
+        //delay(50);
+        //stepper.runToPosition();
+        break;
+      case KEYPAD_SELECT:
+        // TODO: have user confirm by pressing again or to cancel and terminate
+        // everything
+        is_done = true;  // ends loop
+        break;
+    }
+
+    stepper.run();
+    //waitReleaseButton();
+  }
 }
