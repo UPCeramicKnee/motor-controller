@@ -18,21 +18,38 @@ enum Main_Menu {
   MAIN_MENU_ENUM_LAST_ITEM
 };
 
-const char* Main_Menu_Names[] = {"Rotate/re-zero",
-                                 "1 cycle",
-                                 "10 cycles",
-                                 "100 cycles",
-                                 "About"};
+const char* Main_Menu_Names[] = {
+  "Rotate/re-zero",
+  "1 cycle",
+  "10 cycles",
+  "100 cycles",
+  "About"
+};
+                                 
+enum Confirm_Menu {
+  mode_cancel,
+  mode_confirm,
+  CONFIRM_MENU_ENUM_LAST_ITEM
+};
+
+const char* Confirm_Menu_Names[] = {
+  "Cancel",
+  "Confirm"
+};
 
 LCDKeypad lcd;
-AccelStepper stepper(AccelStepper::DRIVER, 22, 24);
+AccelStepper stepper(AccelStepper::DRIVER, 22, 24, 0xFF, 0xFF, false); //false so pins are not enabled
 //AccelStepper stepper(AccelStepper::HALF4WIRE, 8, 11, 9, 10, 8);
+
+const int SUPERCYCLE_WAIT_TIME = 5000; //wait time between each group of 10 cycles
 
 ////////////////////////////////////////////////////////////////////////////////
 // MAIN
 ////////////////////////////////////////////////////////////////////////////////
 
 void setup() {
+  stepper.setEnablePin(26); //enable pin is pin 26
+  
   stepper.setMaxSpeed(4000);  // max supported is about 4000
   stepper.setAcceleration(10000);
   //Test Setup Config:
@@ -51,22 +68,31 @@ void setup() {
 
   int main_menu_choice = showMenu(Main_Menu_Names, MAIN_MENU_ENUM_LAST_ITEM);
 
-  switch (main_menu_choice) {
-    case mode_rotate_and_zero:
-      rotateAndZero();
-      break;
-    case mode_1_cycle:
-      doStepper(1);
-      break;
-    case mode_10_cycles:
-      doStepper(10);
-      break;
-    case mode_100_cycles:
-      doStepper(100);
-      break;
-    case mode_about:
-      showAboutScreen();
-      break;
+  lcd.clear();
+  lcd.print("Are you sure?");
+  delay(1000);
+  int confirm_menu_choice = showMenu(Confirm_Menu_Names, CONFIRM_MENU_ENUM_LAST_ITEM);
+  
+  if (confirm_menu_choice == mode_confirm) {
+    stepper.enableOutputs();
+    
+    switch (main_menu_choice) {
+      case mode_rotate_and_zero:
+        rotateAndZero();
+        break;
+      case mode_1_cycle:
+        doStepper(1);
+        break;
+      case mode_10_cycles:
+        doStepper(10);
+        break;
+      case mode_100_cycles:
+        doStepper(100);
+        break;
+      case mode_about:
+        showAboutScreen();
+        break;
+    }
   }
 
   // END OF PROGRAM
@@ -172,7 +198,7 @@ int showMenu(const char** menu_item_names, int menu_length) {
 
 void doStepperOneCycle() {
   // Moves back and forth once, then returns.
-  stepper.runToNewPosition(400);
+  stepper.runToNewPosition(267); //8 microstep mode, 1.8 degs/step, so 267 steps = 60 degrees
   stepper.runToNewPosition(0);
 }
 
@@ -185,9 +211,19 @@ void doStepper(int repetitions) {
     lcd.print(millis() - starting_time);
     lcd.print("ms");
     lcd.setCursor(0, 1);
-    lcd.print("Cycle #");
+    lcd.print("Doing Cycle#");
     lcd.print(i);
     doStepperOneCycle();
+    
+    if ( (i % 10) == 0 ) {
+      lcd.clear();
+      lcd.print("Wait for Instron");
+      lcd.setCursor(0, 1);
+      lcd.print("for ");
+      lcd.print(SUPERCYCLE_WAIT_TIME);
+      lcd.print(" ms");
+      delay(SUPERCYCLE_WAIT_TIME);
+    }
   }
 }
 
