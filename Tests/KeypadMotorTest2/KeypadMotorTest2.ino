@@ -14,6 +14,7 @@ enum Main_Menu {
   mode_1_cycle,
   mode_10_cycles,
   mode_100_cycles,
+  mode_100_cycles_slow,
   mode_about,
   MAIN_MENU_ENUM_LAST_ITEM
 };
@@ -23,6 +24,7 @@ const char* Main_Menu_Names[] = {
   "1 cycle",
   "10 cycles",
   "100 cycles",
+  "100 cyclesSLOW",
   "About"
 };
                                  
@@ -87,6 +89,15 @@ void setup() {
         doStepper(10);
         break;
       case mode_100_cycles:
+        doStepper(100);
+        break;
+      case mode_100_cycles_slow:
+        lcd.clear();
+        lcd.print("Slow demo mode");
+        //for safe demo purposes
+        delay(1000);
+        stepper.setMaxSpeed(1000);  // max supported is about 4000
+        stepper.setAcceleration(1000);
         doStepper(100);
         break;
       case mode_about:
