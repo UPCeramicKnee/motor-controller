@@ -198,7 +198,7 @@ int showMenu(const char** menu_item_names, int menu_length) {
 
 void doStepperOneCycle() {
   // Moves back and forth once, then returns.
-  stepper.runToNewPosition(267); //8 microstep mode, 1.8 degs/step, so 267 steps = 60 degrees
+  stepper.runToNewPosition(-267); //8 microstep mode, 1.8 degs/step, so 267 steps = 60 degrees
   stepper.runToNewPosition(0);
 }
 
