@@ -1,4 +1,4 @@
-#include "KeypadMotorTest2.h"
+#include "MotorControllerV1.h"
 #include "Arduino.h"
 #include <LiquidCrystal.h>
 #include "./LCDKeypad.h"
@@ -27,7 +27,7 @@ const char* Main_Menu_Names[] = {
   "100 cyclesSLOW",
   "About"
 };
-                                 
+
 enum Confirm_Menu {
   mode_cancel,
   mode_confirm,
@@ -51,7 +51,7 @@ const int SUPERCYCLE_WAIT_TIME = 5000; //wait time between each group of 10 cycl
 
 void setup() {
   stepper.setEnablePin(26); //enable pin is pin 26
-  
+
   stepper.setMaxSpeed(4000);  // max supported is about 4000
   stepper.setAcceleration(10000);
   //Test Setup Config:
@@ -74,10 +74,10 @@ void setup() {
   lcd.print("Are you sure?");
   delay(1000);
   int confirm_menu_choice = showMenu(Confirm_Menu_Names, CONFIRM_MENU_ENUM_LAST_ITEM);
-  
+
   if (confirm_menu_choice == mode_confirm) {
     stepper.enableOutputs();
-    
+
     switch (main_menu_choice) {
       case mode_rotate_and_zero:
         rotateAndZero();
@@ -225,7 +225,7 @@ void doStepper(int repetitions) {
     lcd.print("Doing Cycle#");
     lcd.print(i);
     doStepperOneCycle();
-    
+
     if ( (i % 10) == 0 ) {
       lcd.clear();
       lcd.print("Wait for Instron");

@@ -1,5 +1,5 @@
-#ifndef _KEYPAD_MOTOR_TEST_H
-#define _KEYPAD_MOTOR_TEST_H
+#ifndef _MOTOR_CONTROLLER_V1_H
+#define _MOTOR_CONTROLLER_V1_H
 
 int waitButton();
 void waitReleaseButton();
