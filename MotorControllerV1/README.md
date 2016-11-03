@@ -1,23 +1,16 @@
-# KeypadMotorTest2
+# MotorControllerV1
 
-An improvement over KeypadMotorTest1.
+Actual software to control the motor and handle LCD UI.
 
-## Target Features
+## Features
 
-- Adjust the starting position of motor
-- Set number of cycles, delay, etc
-- Set speed?
-- Pretend mode vs real mode
-- Cancel and return to zero pt
-- Control enable pin
-- Show elapsed time afterwards
-
-## Completed
-
-- About screen
+- Oscillate stepper motor for number of cycles configurable at runtime.
+- Different timing values can easily be adjusted in .ino file.
+- Shows current status on LCD screen.
+- Adjust zero point, in case of unexpected power loss.
 
 ## Other
 
 - .linter-clang-includes to enable linter-clang Arduino header in Atom Editor
 - .ctags to enable .ino support in Atom Editor
-- started following Chromium style guide
+- following Chromium style guide
