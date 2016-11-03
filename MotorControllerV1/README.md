@@ -1,6 +1,6 @@
 # MotorControllerV1
 
-Actual software to control the motor and handle LCD UI.
+Actual software to control the motor and handle LCD UI. Code written by Patrick Miller.
 
 ## Features
 
@@ -8,6 +8,15 @@ Actual software to control the motor and handle LCD UI.
 - Different timing values can easily be adjusted in .ino file.
 - Shows current status on LCD screen.
 - Adjust zero point, in case of unexpected power loss.
+
+## 3rd-party Libraries
+
+- AccelStepper: interface for controlling stepper motor
+- LCDKeypad: wrapper to interace with LCD and keypad
+
+## Internal Libraries
+
+- LCDKeypadExtraChars: defines arrow button, select button and degree icons for LCD UI
 
 ## Other
 
