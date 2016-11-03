@@ -1,5 +1,10 @@
 # Arduino Stepper Motor Controller
 
+<img src="pictures/driver.jpg" width="20%">
+<img src="pictures/frame.jpg" width="20%">
+<img src="pictures/motor.jpg" width="20%">
+<img src="pictures/running.jpg" width="20%">
+
 ### About
 
 Arduino 1.6.0 code and experiments to control our NEMA 34 stepper motor with a microcontroller. For our [capstone project at University of Portland](https://engineering.projects.up.edu/ceramicknee/).
